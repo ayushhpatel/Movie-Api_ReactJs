@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import MovieCard from "./components/MovieCard";
+import { getMovieDetails } from "./api/api";
+import { Container, Grid } from "@material-ui/core";
 
-function App() {
+export default function App() {
+  const [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    getMovieDetails()
+      .then((data) => {
+        setMovies(data);
+      })
+      .catch((error) => {});
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+      <Container>
+        <Grid container>
+          <Grid item xs={12}>
+            {movies.map((score) => (
+              <MovieCard movie={score}></MovieCard>
+            ))}
+          </Grid>
+        </Grid>
+      </Container>
+    </>
+  )
 }
-
-export default App;
